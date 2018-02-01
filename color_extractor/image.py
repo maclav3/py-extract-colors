@@ -1,5 +1,3 @@
-from typing import Tuple
-
 import numpy as np
 import webcolors
 from PIL import Image as im
@@ -15,7 +13,7 @@ class Image:
         # flatten the image, we don't care about x,y
         self._pix = _pix.reshape((_pix.shape[0] * _pix.shape[1], 3))
 
-    def _histogram(self, partitions=3, nbins=5):
+    def histogram(self, partitions=3, nbins=5):
         # counts how many pixels fall in which bin
         bins_count = np.ndarray((partitions, partitions, partitions, 1))
         # maps each pixel to a bin
@@ -45,12 +43,10 @@ class Image:
         colors = []
         for bin in pixels_by_bin:
             pixels = np.take(self._pix, bin, axis=0)
+            if not pixels.any():
+                continue
             colors.append([int(c) for c in np.average(pixels, axis=1)[0]])
 
-        return colors
-
-    def main_colors(self) -> Tuple[str]:
-        colors = self._histogram()
         return tuple([webcolors.rgb_to_hex(color) for color in colors])
 
 
@@ -59,4 +55,4 @@ if __name__ == '__main__':
 
     img = Image(argv[1])
 
-    print(img.main_colors())
+    print(img.histogram())
