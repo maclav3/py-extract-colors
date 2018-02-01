@@ -25,11 +25,11 @@ class Image:
             bins_count[r, g, b] += 1
             pix_to_bin[i] = (r, g, b)
 
-        # check out which bins have the most pixels
+        # check out which bins have the least pixels
         indices = bins_count.flatten().argsort()
-        # sort from most to least
+        # sort from least to most
         indices = np.flipud(indices)
-        # choose nbins largest bins
+        # choose at most nbins largest bins
         indices = indices[:nbins]
 
         # save indices of the bins that have the most pixels
@@ -40,6 +40,7 @@ class Image:
         # indices of matching pixels for each of the highest bins
         pixels_by_bin = [np.where((pix_to_bin == bin_index).all(axis=1)) for bin_index in highest_bins]
 
+        # extract the average color of each bin
         colors = []
         for bin in pixels_by_bin:
             pixels = np.take(self._pix, bin, axis=0)
@@ -47,6 +48,7 @@ class Image:
                 continue
             colors.append([int(c) for c in np.average(pixels, axis=1)[0]])
 
+        # convert to #rrggbb
         return tuple([webcolors.rgb_to_hex(color) for color in colors])
 
 
