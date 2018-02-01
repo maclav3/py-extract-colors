@@ -8,6 +8,7 @@ _resample_size = (256, 256)
 class Image:
     def __init__(self, input):
         self._image = im.open(input)
+        # downsample the image first
         self._image.thumbnail(_resample_size)
         _pix = np.array(self._image)
         # flatten the image, we don't care about x,y
@@ -44,6 +45,7 @@ class Image:
         colors = []
         for bin in pixels_by_bin:
             pixels = np.take(self._pix, bin, axis=0)
+            # skip empty bins
             if not pixels.any():
                 continue
             colors.append([int(c) for c in np.average(pixels, axis=1)[0]])
