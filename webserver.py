@@ -1,4 +1,5 @@
 import os
+import shutil
 import tempfile
 
 from flask import Flask, render_template, request, send_from_directory
@@ -49,3 +50,5 @@ def uploaded_file(filename):
 
 if __name__ == '__main__':
     app.run()
+
+    shutil.rmtree(uploadDir)

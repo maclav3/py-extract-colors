@@ -11,7 +11,7 @@ setup(
     url='https://github.com/maclav3/py-extract-colors',
     packages=['color_extractor'],
     requires=[
-        'Pillow', 'numpy', 'webcolors', ],
+        'Pillow', 'numpy', 'webcolors', 'flask', 'werkzeug', ],
     entry_points={
         'console_scripts': [
             'color-extractor = color_extractor.__main__:main'
